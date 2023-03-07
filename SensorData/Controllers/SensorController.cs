@@ -8,5 +8,30 @@ namespace SensorData.Controllers
         {
             return View();
         }
+
+        public IActionResult Calibration()
+        {
+            return View();
+        }
+
+        public IActionResult Product()
+        {
+            return View();
+        }
+
+        public IActionResult Customer()
+        {
+            return View();
+        }
+
+        public IActionResult Report()
+        {
+            return View();
+        }
+
+        public IActionResult Map()
+        {
+            return View();
+        }
     }
 }
