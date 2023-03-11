@@ -1,0 +1,64 @@
+﻿@model SensorData.Models.Sensor
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Sensor</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Ar1" class="control-label"></label>
+                <input asp-for="Ar1" class="form-control" />
+                <span asp-validation-for="Ar1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ar2" class="control-label"></label>
+                <input asp-for="Ar2" class="form-control" />
+                <span asp-validation-for="Ar2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ar3" class="control-label"></label>
+                <input asp-for="Ar3" class="form-control" />
+                <span asp-validation-for="Ar3" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="H2o1" class="control-label"></label>
+                <input asp-for="H2o1" class="form-control" />
+                <span asp-validation-for="H2o1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="H2o2" class="control-label"></label>
+                <input asp-for="H2o2" class="form-control" />
+                <span asp-validation-for="H2o2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="H2o3" class="control-label"></label>
+                <input asp-for="H2o3" class="form-control" />
+                <span asp-validation-for="H2o3" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CalDateTime" class="control-label"></label>
+                <input asp-for="CalDateTime" class="form-control" />
+                <span asp-validation-for="CalDateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

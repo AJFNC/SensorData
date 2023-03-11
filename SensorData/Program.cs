@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using SensorData.Models;
+
 namespace SensorData
 {
     public class Program
@@ -8,6 +11,8 @@ namespace SensorData
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddEntityFrameworkNpgsql()
+                .AddDbContext<SensorContext>(options => options.UseNpgsql("Host=localhost;Port=5432;Pooling=true;Database=postgres;User Id=postgres;Password=Pg3202pG;"));
 
             var app = builder.Build();
 
