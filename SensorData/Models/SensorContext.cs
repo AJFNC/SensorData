@@ -10,7 +10,7 @@ namespace SensorData.Models
         }
 
         public DbSet<Sensor>? Sensors { get; set; }
-        public DbSet<Frequency> Frequencies { get; set; }
+        public DbSet<Frequency>? Frequencies { get; set; }
         public DbSet<Spot> Spots { get; set; }
 
     }

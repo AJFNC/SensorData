@@ -56,6 +56,7 @@ namespace SensorData.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Ar1,Ar2,Ar3,H2o1,H2o2,H2o3,CalDateTime")] Sensor sensor)
+        //public async Task<IActionResult> Create([FromQuery] Sensor sensor)
         {
             if (ModelState.IsValid)
             {
