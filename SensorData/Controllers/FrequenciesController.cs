@@ -50,9 +50,10 @@ namespace SensorData.Controllers
             return View();
         }
 
-        // POST: Frequencies/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //POST: Frequencies/Create
+        //To protect from overposting attacks, enable the specific properties you want to bind to.
+        //For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Sensor_Id,Frl1,Frl2,Frl3,ReadDateTime")] Frequency frequency)
@@ -65,6 +66,7 @@ namespace SensorData.Controllers
             }
             return View(frequency);
         }
+
 
         // GET: Frequencies/Edit/5
         public async Task<IActionResult> Edit(int? id)
