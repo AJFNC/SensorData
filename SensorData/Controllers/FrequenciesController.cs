@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using SensorData.Models;
-using System.Web.Http;
-using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace SensorData.Controllers
 {
-    [Route("[controller]")]
-    [ApiController]
-    public class FrequenciesController : ControllerBase
+    public class FrequenciesController : Controller
     {
-
         private readonly SensorContext _context;
 
         public FrequenciesController(SensorContext context)
@@ -17,41 +18,145 @@ namespace SensorData.Controllers
             _context = context;
         }
 
-        public IActionResult GetAllFrequencies()
+        // GET: Frequencies
+        public async Task<IActionResult> Index()
         {
-            IList<Frequency>? frequencies = null;
+              return _context.Frequencies != null ? 
+                          View(await _context.Frequencies.ToListAsync()) :
+                          Problem("Entity set 'SensorContext.Frequencies'  is null.");
+        }
 
-            using (var contexto = _context)
-            {
-                frequencies = contexto.Frequencies.ToList();
-            }
-            if(frequencies.Count == 0)
+        // GET: Frequencies/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null || _context.Frequencies == null)
             {
                 return NotFound();
             }
-                return Ok(frequencies);
+
+            var frequency = await _context.Frequencies
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (frequency == null)
+            {
+                return NotFound();
+            }
+
+            return View(frequency);
         }
 
-        //public IActionResult PostNewFrequencies(Frequency freqs)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return BadRequest("Not a valid model");
+        // GET: Frequencies/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
 
-        //    using (var contexto = _context)
-        //    {
-        //        contexto.Frequencies.Add(new Frequency()
-        //        {
-        //            Id = freqs.Id,
-        //            Sensor_Id = freqs.Sensor_Id,
-        //            Frl1 = freqs.Frl1,
-        //            Frl2 = freqs.Frl2,
-        //            Frl3 = freqs.Frl3,
-        //            ReadDateTime = freqs.ReadDateTime
-        //        });
-        //        contexto.SaveChanges();
-        //    }
+        // POST: Frequencies/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,Sensor_Id,Frl1,Frl2,Frl3,ReadDateTime")] Frequency frequency)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(frequency);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(frequency);
+        }
 
-        //        return Ok();
-        //}
+        // GET: Frequencies/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.Frequencies == null)
+            {
+                return NotFound();
+            }
+
+            var frequency = await _context.Frequencies.FindAsync(id);
+            if (frequency == null)
+            {
+                return NotFound();
+            }
+            return View(frequency);
+        }
+
+        // POST: Frequencies/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Sensor_Id,Frl1,Frl2,Frl3,ReadDateTime")] Frequency frequency)
+        {
+            if (id != frequency.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(frequency);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!FrequencyExists(frequency.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(frequency);
+        }
+
+        // GET: Frequencies/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null || _context.Frequencies == null)
+            {
+                return NotFound();
+            }
+
+            var frequency = await _context.Frequencies
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (frequency == null)
+            {
+                return NotFound();
+            }
+
+            return View(frequency);
+        }
+
+        // POST: Frequencies/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (_context.Frequencies == null)
+            {
+                return Problem("Entity set 'SensorContext.Frequencies'  is null.");
+            }
+            var frequency = await _context.Frequencies.FindAsync(id);
+            if (frequency != null)
+            {
+                _context.Frequencies.Remove(frequency);
+            }
+            
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool FrequencyExists(int id)
+        {
+          return (_context.Frequencies?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
     }
 }

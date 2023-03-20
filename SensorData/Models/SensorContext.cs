@@ -4,6 +4,10 @@ namespace SensorData.Models
 {
     public class SensorContext : DbContext
     {
+        public SensorContext()
+        {
+        }
+
         public SensorContext(DbContextOptions<SensorContext> options) : base(options) {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
