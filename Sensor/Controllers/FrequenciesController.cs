@@ -24,10 +24,10 @@ namespace Sensor.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Frequency>>> GetFrequencies()
         {
-          if (_context.Frequencies == null)
-          {
-              return NotFound();
-          }
+            if (_context.Frequencies == null)
+            {
+                return NotFound();
+            }
             return await _context.Frequencies.ToListAsync();
         }
 
@@ -35,10 +35,10 @@ namespace Sensor.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Frequency>> GetFrequency(int id)
         {
-          if (_context.Frequencies == null)
-          {
-              return NotFound();
-          }
+            if (_context.Frequencies == null)
+            {
+                return NotFound();
+            }
             var frequency = await _context.Frequencies.FindAsync(id);
 
             if (frequency == null)
@@ -83,18 +83,36 @@ namespace Sensor.Controllers
         // POST: api/Frequencies
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Frequency>> PostFrequency(Frequency frequency)
+        public async Task<ActionResult<FrequencyDTO>> PostFrequency(FrequencyDTO frequencyDTO)
         {
-          if (_context.Frequencies == null)
-          {
-              return Problem("Entity set 'SensorContext.Frequencies'  is null.");
-          }
+            if (_context.Frequencies == null)
+            {
+                return Problem("Entity set 'SensorContext.Frequencies'  is null.");
+            }
+
+            var frequency = new Frequency()
+            {
+                Sensor_Id = frequencyDTO.Sensor_Id,
+                Frl1 = frequencyDTO.Frl1,
+                Frl2 = frequencyDTO.Frl2,
+                Frl3 = frequencyDTO.Frl3
+            };
+
+
             _context.Frequencies.Add(frequency);
             await _context.SaveChangesAsync();
 
             //return CreatedAtAction("GetFrequency", new { id = frequency.Id }, frequency);
-            return CreatedAtAction(nameof(GetFrequency), new { id = frequency.Id }, frequency);
+            return CreatedAtAction(nameof(GetFrequency), new { id = frequency.Id }, frequencyToDTO(frequency));
         }
+
+        private FrequencyDTO frequencyToDTO(Frequency frequency) => new FrequencyDTO
+        {
+            Sensor_Id = frequency.Sensor_Id,
+            Frl1 = frequency.Frl1,
+            Frl2 = frequency.Frl2,
+            Frl3 = frequency.Frl3
+        };
 
         // DELETE: api/Frequencies/5
         [HttpDelete("{id}")]
