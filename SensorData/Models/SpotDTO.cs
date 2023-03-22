@@ -2,7 +2,7 @@
 {
     public class SpotDTO
     {
-        public string? Name { get; set; }
+        public string Name { get; set; }
         public string? Lat { get; set; }
         public string? Long { get; set; }
         public float A { get; set; }
