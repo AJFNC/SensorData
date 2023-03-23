@@ -49,6 +49,34 @@ namespace Sensor.Controllers
             return frequency;
         }
 
+        // GET: api/Frequencies/sensor/3
+        [HttpGet("sensor/{sensor_id}")]
+        public async Task<ActionResult<IEnumerable<Frequency>>> GetFrequenciesBySensorId(int sensor_id)
+        {
+            if (_context.Frequencies == null)
+            {
+                return NotFound();
+            }
+            return await _context.Frequencies.Where(p => p.Sensor_Id == sensor_id).ToListAsync();
+        }
+
+        // GET: api/Frequencies/sensor/time/24
+        [HttpGet("sensor/{sensor_id}/time/{time:int}")]
+        public async Task<ActionResult<IEnumerable<Frequency>>> GetFrequenciesBySensorId24H(int sensor_id, int time)
+        {
+            if (_context.Frequencies == null)
+            {
+                return NotFound();
+            }
+            var frequencies = await _context.Frequencies.Where(p => p.Sensor_Id == sensor_id).ToListAsync();
+
+            DateTime dateTimeNow = DateTime.Now;
+
+            var freqTimeHours = frequencies.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-time)).ToList();
+
+            return freqTimeHours;
+        }
+
         // PUT: api/Frequencies/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
