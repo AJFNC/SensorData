@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    DateTime dateTimeNow = DateTime.Now;
 }
 
 <h1>Index</h1>
@@ -32,7 +33,8 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-24)).ToList())
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Sensor_Id)
