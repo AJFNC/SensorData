@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SensorData.Models;
 
+
 namespace SensorData.Controllers
 {
     public class FrequenciesController : Controller
