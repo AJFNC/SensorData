@@ -67,7 +67,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-24)).Where(t => t.Sensor_Id == sensorSpot).ToList())
+        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-36)).Where(t => t.Sensor_Id == sensorSpot).ToList())
         {
             <tr>
             <td>
@@ -121,10 +121,9 @@
 
 
     function createGraphic(ctx){
+ 
 
-
-
-        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-24)).Where(t => t.Sensor_Id == sensorSpot).ToList())
+        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-36)).Where(t => t.Sensor_Id == sensorSpot).ToList())
         {
             Console.Write(item.Sensor_Id.ToString() + " " + item.Frl1 + " " + item.Frl2 + " " + item.Frl3 + " ");
 
@@ -132,11 +131,6 @@
             frl1Model = item.Frl1;
             frl2Model = item.Frl2;
             frl3Model = item.Frl3;
-
-        //Console.WriteLine(labelsModel);
-        //Console.WriteLine(frl1Model);
-        //Console.WriteLine(frl2Model);
-        //Console.WriteLine(frl3Model);
 
             labelsArray[index] = labelsModel;
             frl1Array[index] = frl1Model;
@@ -229,3 +223,4 @@
     }
 
 </script>
+
