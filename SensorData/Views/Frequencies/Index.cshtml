@@ -25,12 +25,9 @@
 <h2>12 horas de leituras de dados</h2>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h2 class="h2">Umidade de solo do sensor:</h2>
+    <h2 class="h2">Umidade de solo do sensor: SS</h2>
     <div class="btn-toolbar mb-2 mb-md-0">
-        <select id="local_sensor">
-            <option value="2">SS</option>
-            <option value="3">Banana</option>
-        </select>
+        <a class="nav-link" asp-area="" asp-controller="Frequencies1" asp-action="Index">Bananas</a>
     </div>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
@@ -96,8 +93,6 @@
 </table>
 
 
-
-@*<canvas class="my-4 w-100" id="lineChart" width="900" height="380"></canvas>*@
 
 
 <script src="../lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -202,4 +197,18 @@
         }
         myChart.update();
     }
+
+    function changePage() {
+        var valueR = document.getElementById('local_sensor').value;
+        if (valueR == '3'){
+            console.log(valueR)
+            //document.write(<a class="nav-link" asp-area="" asp-controller="Frequencies" asp-action="Index1" >Bananas</a>);
+        }
+        else{
+           console.log(valueR);
+           //document.write(<a class="nav-link" asp-area="" asp-controller="Frequencies" asp-action="Index" >SS</a>);
+        }
+        
+    }
+
 </script>

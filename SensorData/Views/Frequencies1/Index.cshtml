@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<SensorData.Models.Frequency>
 
 @{
-    ViewData["Title"] = "Index1";
+    ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     DateTime PegaHoraBrasilia() => TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
@@ -17,24 +17,18 @@
     float[]? frl3Array = new float[20];
 
     int sensorSpot = 3;
-
     var index = 0;
 
-}
 
+}
 
 <h2>12 horas de leituras de dados</h2>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h2 class="h2">Umidade de solo em %</h2>
-
-@*    <div>
-        <select id="local_sensor" onchange="changePage()">
-            <option value="2">SS</option>
-            <option value="3">Banana</option>
-        </select>
-    </div>*@
-
+    <h2 class="h2">Umidade de solo do sensor: Bananas</h2>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a class="nav-link" asp-area="" asp-controller="Frequencies" asp-action="Index">SS</a>
+    </div>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
             <button type="button" class="btn btn-sm btn-outline-secondary">Compartilhar</button>
@@ -112,94 +106,79 @@
 
 
 <script>
-
     console.log("Teste de console no javascript");
-
     // Graphs
-    const ctx = document.getElementById('lineChart');
-
-
-    //// Graphs
-    //const ctx = document.getElementById('lineChart');
-    // eslint-disable-next-line no-unused-vars
-    const myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [{
-                label: "Frl1",
-                data: [],
-                lineTension: 0,
-                backgroundColor: 'transparent',
-                borderColor: '#007bff',
-                borderWidth: 4,
-                pointBackgroundColor: '#008bff'
-            },
-            {
-                label: "Frl2",
-                data: [],
-                lineTension: 0,
-                backgroundColor: 'transparent',
-                borderColor: '#ff8b00',
-                borderWidth: 4,
-                pointBackgroundColor: '#ff8b00'
-            },
-            {
-                label: "Frl3",
-                data: [],
-                lineTension: 0,
-                backgroundColor: 'transparent',
-                borderColor: '#00ff8b',
-                borderWidth: 4,
-                pointBackgroundColor: '#00ff8b'
-            },
-            ]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: false
-                    }
-                }]
-            },
-            legend: {
-                display: false
-            }
-        }
-    });
-
-
-    updateGraphic();
-
-    function updateGraphic() {
-
+    const ctxA = document.getElementById('lineChart');
+    createGraphic(ctxA);
+    function createGraphic(ctx) {
 
     @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-56)).Where(t => t.Sensor_Id == sensorSpot).ToList())
     {
         Console.Write(item.Sensor_Id.ToString() + " " + item.Frl1 + " " + item.Frl2 + " " + item.Frl3 + " ");
-
         labelsModel = item.ReadDateTime.ToString();
         frl1Model = item.Frl1;
         frl2Model = item.Frl2;
         frl3Model = item.Frl3;
-
         labelsArray[index] = labelsModel;
         frl1Array[index] = frl1Model;
         frl2Array[index] = frl2Model;
         frl3Array[index] = frl3Model;
-
         index++;
     };
-
- 
+        //// Graphs
+        //const ctx = document.getElementById('lineChart');
+        // eslint-disable-next-line no-unused-vars
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: "Frl1",
+                    data: [],
+                    lineTension: 0,
+                    backgroundColor: 'transparent',
+                    borderColor: '#007bff',
+                    borderWidth: 4,
+                    pointBackgroundColor: '#008bff'
+                },
+                {
+                    label: "Frl2",
+                    data: [],
+                    lineTension: 0,
+                    backgroundColor: 'transparent',
+                    borderColor: '#ff8b00',
+                    borderWidth: 4,
+                    pointBackgroundColor: '#ff8b00'
+                },
+                {
+                    label: "Frl3",
+                    data: [],
+                    lineTension: 0,
+                    backgroundColor: 'transparent',
+                    borderColor: '#00ff8b',
+                    borderWidth: 4,
+                    pointBackgroundColor: '#00ff8b'
+                },
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: false
+                        }
+                    }]
+                },
+                legend: {
+                    display: false
+                }
+            }
+        });
         var dtLabels = new Array();         //Array Javascript
         var dtFrl1 = new Array();
         var dtFrl2 = new Array();
         var dtFrl3 = new Array();
-
         var indexJS = 0;
-
     @for (var i = 0; i < labelsArray.Length; i++)
     {
         @:(dtLabels[indexJS] = '@labelsArray[i]');
@@ -208,34 +187,28 @@
         @:(dtFrl3[indexJS] = '@frl3Array[i]'.replace(',', '.'));
         @:(indexJS++);
     }
-
-
-        for (let i = 0; i < dtLabels.length; i++) {
-
+                for (let i = 0; i < dtLabels.length; i++) {
             if (dtLabels[i] == 0)
                 break;
-
             myChart.data.labels[i] = dtLabels[i];
             myChart.data.datasets[0].data[i] = dtFrl1[i];
             myChart.data.datasets[1].data[i] = dtFrl2[i];
             myChart.data.datasets[2].data[i] = dtFrl3[i];
-
         }
-
         myChart.update();
-
     }
+
     function changePage() {
         var valueR = document.getElementById('local_sensor').value;
-        if (valueR == '3'){
-            @{<a asp-controller="SensorData" asp-action="Index1">Bananas</a>}
+        if (valueR == '3') {
+            console.log(valueR)
+            //document.write(<a class="nav-link" asp-area="" asp-controller="Frequencies" asp-action="Index1" >Bananas</a>);
         }
-        else{
-            @{<a asp-controller="SensorData" asp-action="Index">SS</a>}
+        else {
+            console.log(valueR);
+            //document.write(<a class="nav-link" asp-area="" asp-controller="Frequencies" asp-action="Index" >SS</a>);
         }
-        
+
     }
 
 </script>
-
-
