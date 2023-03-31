@@ -25,7 +25,7 @@
 <h2>12 horas de leituras de dados</h2>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h2 class="h2">Umidade de solo do sensor: Bananas</h2>
+    <h2 class="h2">Umidade de solo do sensor (%): Bananas</h2>
     <div class="btn-toolbar mb-2 mb-md-0">
         <a class="nav-link" asp-area="" asp-controller="Frequencies" asp-action="Index">SS</a>
     </div>
@@ -64,7 +64,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-56)).Where(t => t.Sensor_Id == sensorSpot).ToList())
+        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-12)).Where(t => t.Sensor_Id == sensorSpot).ToList())
         {
             <tr>
                 <td>
@@ -112,7 +112,7 @@
     createGraphic(ctxA);
     function createGraphic(ctx) {
 
-    @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-56)).Where(t => t.Sensor_Id == sensorSpot).ToList())
+    @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-12)).Where(t => t.Sensor_Id == sensorSpot).ToList())
     {
         Console.Write(item.Sensor_Id.ToString() + " " + item.Frl1 + " " + item.Frl2 + " " + item.Frl3 + " ");
         labelsModel = item.ReadDateTime.ToString();
@@ -159,6 +159,15 @@
                     borderWidth: 4,
                     pointBackgroundColor: '#00ff8b'
                 },
+                {
+                    label: "Capacidade de campo Banana",
+                    data: [],
+                    lineTension: 0,
+                    backgroundColor: 'transparent',
+                    borderColor: '#ff0000',
+                    borderWidth: 1,
+                    pointBackgroundColor: '#ff0000'
+                }
                 ]
             },
             options: {
@@ -194,21 +203,11 @@
             myChart.data.datasets[0].data[i] = dtFrl1[i];
             myChart.data.datasets[1].data[i] = dtFrl2[i];
             myChart.data.datasets[2].data[i] = dtFrl3[i];
+            myChart.data.datasets[3].data[i] = 13.3;
         }
         myChart.update();
     }
 
-    function changePage() {
-        var valueR = document.getElementById('local_sensor').value;
-        if (valueR == '3') {
-            console.log(valueR)
-            //document.write(<a class="nav-link" asp-area="" asp-controller="Frequencies" asp-action="Index1" >Bananas</a>);
-        }
-        else {
-            console.log(valueR);
-            //document.write(<a class="nav-link" asp-area="" asp-controller="Frequencies" asp-action="Index" >SS</a>);
-        }
 
-    }
 
 </script>

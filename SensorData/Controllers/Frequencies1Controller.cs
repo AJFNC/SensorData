@@ -21,9 +21,53 @@ namespace SensorData.Controllers
         // GET: Frequencies1
         public async Task<IActionResult> Index()
         {
-              return _context.Frequencies != null ? 
-                          View(await _context.Frequencies.ToListAsync()) :
-                          Problem("Entity set 'SensorContext.Frequencies'  is null.");
+            //return _context.Frequencies != null ? 
+            //            View(await _context.Frequencies.ToListAsync()) :
+            //            Problem("Entity set 'SensorContext.Frequencies'  is null.");
+
+            if (_context.Frequencies == null)
+            {
+                return NotFound();
+            }
+            if (_context.Spots == null)
+            {
+                return NotFound();
+            }
+            var spot = await _context.Spots.ToListAsync();      //Para ser usado na conversão de Frel para Umid%
+            var frequency = await _context.Frequencies
+                .ToListAsync();
+            if (frequency == null)
+            {
+                return NotFound();
+            }
+            if (spot == null)
+            {
+                return NotFound();
+            }
+
+            foreach (Frequency item in frequency)
+            {
+
+                foreach (Spot sitem in spot.Where(s => s.Sensor_Id == item.Sensor_Id).Where(t => t.Name == "Frl3"))
+                {
+                    item.Frl3 = (item.Frl3 * sitem.A) + sitem.B;
+                }
+
+                foreach (Spot sitem in spot.Where(s => s.Sensor_Id == item.Sensor_Id).Where(t => t.Name == "Frl2"))
+                {
+                    item.Frl2 = (item.Frl2 * sitem.A) + sitem.B;
+                }
+
+                foreach (Spot sitem in spot.Where(s => s.Sensor_Id == item.Sensor_Id).Where(t => t.Name == "Frl1"))
+                {
+                    item.Frl1 = (item.Frl1 * sitem.A) + sitem.B;
+                }
+
+
+            }
+
+            return View(frequency);
+
         }
 
         // GET: Frequencies1/Details/5
