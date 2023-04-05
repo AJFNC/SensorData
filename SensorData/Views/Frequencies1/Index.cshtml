@@ -11,10 +11,10 @@
     float frl1Model;
     float frl2Model;
     float frl3Model;
-    String[]? labelsArray = new String[20];
-    float[]? frl1Array = new float[20];
-    float[]? frl2Array = new float[20];
-    float[]? frl3Array = new float[20];
+    String[]? labelsArray = new String[150];
+    float[]? frl1Array = new float[150];
+    float[]? frl2Array = new float[150];
+    float[]? frl3Array = new float[150];
 
     int sensorSpot = 3;
     var index = 0;
@@ -22,7 +22,7 @@
 
 }
 
-<h2>12 horas de leituras de dados</h2>
+<h2>4 horas de leituras de dados</h2>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h2 class="h2">Umidade de solo do sensor (%): Bananas</h2>
@@ -64,7 +64,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-12)).Where(t => t.Sensor_Id == sensorSpot).ToList())
+        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-4)).Where(t => t.Sensor_Id == sensorSpot).OrderByDescending(o => o.Id).ToList())
         {
             <tr>
                 <td>
@@ -112,7 +112,7 @@
     createGraphic(ctxA);
     function createGraphic(ctx) {
 
-    @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-12)).Where(t => t.Sensor_Id == sensorSpot).ToList())
+    @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-4)).Where(t => t.Sensor_Id == sensorSpot).ToList())
     {
         Console.Write(item.Sensor_Id.ToString() + " " + item.Frl1 + " " + item.Frl2 + " " + item.Frl3 + " ");
         labelsModel = item.ReadDateTime.ToString();
@@ -124,6 +124,10 @@
         frl2Array[index] = frl2Model;
         frl3Array[index] = frl3Model;
         index++;
+        if (index >= labelsArray.Length)
+        {
+            break;
+        }
     };
         //// Graphs
         //const ctx = document.getElementById('lineChart');
@@ -160,13 +164,31 @@
                     pointBackgroundColor: '#00ff8b'
                 },
                 {
-                    label: "Capacidade de campo Banana",
+                    label: "Capacidade de campo Banana: 0-20",
                     data: [],
                     lineTension: 0,
                     backgroundColor: 'transparent',
-                    borderColor: '#ff0000',
+                    borderColor: '#008bff',
                     borderWidth: 1,
-                    pointBackgroundColor: '#ff0000'
+                    pointBackgroundColor: '#008bff'
+                },
+                {
+                    label: "Capacidade de campo Banana: 20-40",
+                    data: [],
+                    lineTension: 0,
+                    backgroundColor: 'transparent',
+                    borderColor: '#ff8b00',
+                    borderWidth: 1,
+                    pointBackgroundColor: '#ff8b00'
+                },
+                {
+                    label: "Capacidade de campo Banana: 40-60",
+                    data: [],
+                    lineTension: 0,
+                    backgroundColor: 'transparent',
+                    borderColor: '#00ff8b',
+                    borderWidth: 1,
+                    pointBackgroundColor: '#00ff8b'
                 }
                 ]
             },
@@ -179,7 +201,7 @@
                     }]
                 },
                 legend: {
-                    display: false
+                    display: true
                 }
             }
         });
@@ -188,6 +210,12 @@
         var dtFrl2 = new Array();
         var dtFrl3 = new Array();
         var indexJS = 0;
+        var fieldCap20 = 15.94;
+        var fieldCap40 = 15.572;
+        var fieldCap60 = 9.976;
+
+
+
     @for (var i = 0; i < labelsArray.Length; i++)
     {
         @:(dtLabels[indexJS] = '@labelsArray[i]');
@@ -203,7 +231,9 @@
             myChart.data.datasets[0].data[i] = dtFrl1[i];
             myChart.data.datasets[1].data[i] = dtFrl2[i];
             myChart.data.datasets[2].data[i] = dtFrl3[i];
-            myChart.data.datasets[3].data[i] = 13.3;
+            myChart.data.datasets[3].data[i] = fieldCap20;
+            myChart.data.datasets[4].data[i] = fieldCap40;
+            myChart.data.datasets[5].data[i] = fieldCap60;
         }
         myChart.update();
     }
