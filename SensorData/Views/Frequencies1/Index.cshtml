@@ -64,7 +64,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-4)).Where(t => t.Sensor_Id == sensorSpot).OrderByDescending(o => o.Id).ToList())
+        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-186)).Where(t => t.Sensor_Id == sensorSpot).OrderByDescending(o => o.Id).ToList())
         {
             <tr>
                 <td>
@@ -112,9 +112,9 @@
     createGraphic(ctxA);
     function createGraphic(ctx) {
 
-    @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-4)).Where(t => t.Sensor_Id == sensorSpot).ToList())
+    @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-186)).Where(t => t.Sensor_Id == sensorSpot).ToList())
     {
-        Console.Write(item.Sensor_Id.ToString() + " " + item.Frl1 + " " + item.Frl2 + " " + item.Frl3 + " ");
+        Console.Write(item.Sensor_Id.ToString() + " " + item.Frl1 + " " + item.Frl2 + " " + item.Frl3 + " " + item.ReadDateTime.Ticks);
         labelsModel = item.ReadDateTime.ToString();
         frl1Model = item.Frl1;
         frl2Model = item.Frl2;

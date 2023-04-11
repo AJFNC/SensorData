@@ -11,10 +11,14 @@
     float frl1Model;
     float frl2Model;
     float frl3Model;
-    String[]? labelsArray = new String[150];
-    float[]? frl1Array = new float[150];
-    float[]? frl2Array = new float[150];
-    float[]? frl3Array = new float[150];
+    String[]? labelsArray = new String[300];
+    float[]? frl1Array = new float[300];
+    float[]? frl2Array = new float[300];
+    float[]? frl3Array = new float[300];
+
+    float[]? frl1ArrayAvg = new float[300];
+    float[]? frl2ArrayAvg = new float[300];
+    float[]? frl3ArrayAvg = new float[300];
 
     float A;
     float B;
@@ -22,6 +26,23 @@
     int sensorSpot = 2;
     var index = 0;
 
+    // var indexSave = 0;
+
+    float[] avgFrl1 = new float[10];
+    float[] avgFrl2 = new float[10];
+    float[] avgFrl3 = new float[10];
+
+    var indexT = 0;
+    var indexTT = 0;
+
+    Frequency[] itemT = new Frequency[300];
+
+
+    Frequency[] tempItem10 = new Frequency[10];
+    Frequency[] tempItemArr = new Frequency[3000];
+
+    var initialHour = 0;
+    var initialMinute = 0;
 
 }
 
@@ -68,8 +89,10 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-4)).Where(t => t.Sensor_Id == sensorSpot).OrderByDescending(o => o.Id).ToList())
+
+        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-48)).Where(t => t.Sensor_Id == sensorSpot).OrderByDescending(o => o.Id).ToList())
         {
+
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Sensor_Id)
@@ -87,12 +110,11 @@
                     @Html.DisplayFor(modelItem => item.ReadDateTime)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }
+
+
     </tbody>
 </table>
 
@@ -106,35 +128,47 @@
 
 <script src="../lib/bootstrap/dist/css/dashboard.css"></script>
 <script src="../lib/bootstrap/dist/css/dashboard.rtl.css"></script>
-@*<script src="../lib/bootstrap/dist/js/dashboard.js"></script>*@
+
 
 
 <script>
     console.log("Teste de console no javascript");
     // Graphs
     const ctxA = document.getElementById('lineChart');
+    
+
     createGraphic(ctxA);
     function createGraphic(ctx) {
 
-    @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-4)).Where(t => t.Sensor_Id == sensorSpot).ToList())
-    {
-        Console.Write(item.Sensor_Id.ToString() + " " + item.Frl1 + " " + item.Frl2 + " " + item.Frl3 + " ");
-        labelsModel = item.ReadDateTime.ToString();
-        frl1Model = item.Frl1;
-        frl2Model = item.Frl2;
-        frl3Model = item.Frl3;
-        labelsArray[index] = labelsModel;
-        frl1Array[index] = frl1Model;
-        frl2Array[index] = frl2Model;
-        frl3Array[index] = frl3Model;
-        index++;
-        if(index >= labelsArray.Length)
+
+
+        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-48)).Where(t => t.Sensor_Id == sensorSpot).ToList())
         {
-            break;
-        }
-        
-    }
-    ;
+
+            labelsModel = item.ReadDateTime.ToString();
+            frl1Model = item.Frl1;
+            frl2Model = item.Frl2;
+            frl3Model = item.Frl3;
+
+
+            //Console.WriteLine(index + " " + item.Frl1 + " " + item.Frl2 + " " + item.Frl3 + " " + item.ReadDateTime.Hour + " " + item.ReadDateTime.Minute);
+
+
+            labelsArray[index] = labelsModel;
+            frl1Array[index] = frl1Model;
+            frl2Array[index] = frl2Model;
+            frl3Array[index] = frl3Model;
+            tempItemArr[index] = item;
+
+
+            index++;
+            if (index >= labelsArray.Length)
+            {
+                break;
+            }
+        };
+
+
         //// Graphs
         //const ctx = document.getElementById('lineChart');
         // eslint-disable-next-line no-unused-vars
@@ -221,26 +255,80 @@
         var fieldCap60 = 10.153;
 
 
+        @for (var i = 0; i < labelsArray.Length; i++)
+        {
 
-    @for (var i = 0; i < labelsArray.Length; i++)
-    {
-        @:(dtLabels[indexJS] = '@labelsArray[i]');
-        @:(dtFrl1[indexJS] = '@frl1Array[i]'.replace(',', '.'));
-        @:(dtFrl2[indexJS] = '@frl2Array[i]'.replace(',', '.'));
-        @:(dtFrl3[indexJS] = '@frl3Array[i]'.replace(',', '.'));
-        @:(indexJS++);
-    }
-            for (let i = 0; i < dtLabels.length; i++) {
-            if (dtLabels[i] == 0)
+            initialHour = tempItemArr[i].ReadDateTime.Hour;
+            initialMinute = tempItemArr[i].ReadDateTime.Minute;
+            //index10 = i;    //Maybe needs to be commented
+
+            if (i + 1 >= 300)
                 break;
-            myChart.data.labels[i] = dtLabels[i];
-            myChart.data.datasets[0].data[i] = dtFrl1[i];
-            myChart.data.datasets[1].data[i] = dtFrl2[i];
-            myChart.data.datasets[2].data[i] = dtFrl3[i];
-            myChart.data.datasets[3].data[i] = fieldCap20;
-            myChart.data.datasets[4].data[i] = fieldCap40;
-            myChart.data.datasets[5].data[i] = fieldCap60;
+
+            if (tempItemArr[i + 1] == null)
+            {
+                break;
+            }
+
+
+            if (tempItemArr[i + 1].ReadDateTime.Hour <= initialHour)
+            {
+                if (tempItemArr[i + 1].ReadDateTime.Minute < initialMinute + 3)
+                {
+                    continue;
+
+                }
+                
+            }
+            //Save only the last reg transmitted
+
+            Console.WriteLine(tempItemArr[i].ReadDateTime + " " + tempItemArr[i].Frl1 + " " + tempItemArr[i].Frl2 + " " + tempItemArr[i].Frl3);
+
+            if (i >= 300)
+                        break;
+
+            ////////////////////////////
+
+            if (indexT >= 300)
+                break;
+        //itemT[indexT] = tempItemArr[i];
+
+            if (tempItemArr[i] == null)
+                    break;
+
+            Console.WriteLine("Datas separadas = " + tempItemArr[i].ReadDateTime + " " + indexT);
+
+            indexT++;
+
+
+            ////////////////////////////
+
+            Console.WriteLine("Grupo = " + i);
+
+            @:(dtLabels[indexJS] = '@labelsArray[i]');
+            @:(dtFrl1[indexJS] = '@frl1Array[i]'.replace(',', '.'));
+            @:(dtFrl2[indexJS] = '@frl2Array[i]'.replace(',', '.'));
+            @:(dtFrl3[indexJS] = '@frl3Array[i]'.replace(',', '.'));
+
+            @:(indexJS++);
+
+        
         }
+
+
+            for (let i = 0; i < dtLabels.length; i++) {
+                if (dtLabels[i] == 0)
+                    break;
+
+                    myChart.data.labels[i] = dtLabels[i];
+                    myChart.data.datasets[0].data[i] = dtFrl1[i];
+                    myChart.data.datasets[1].data[i] = dtFrl2[i];
+                    myChart.data.datasets[2].data[i] = dtFrl3[i];
+                    myChart.data.datasets[3].data[i] = fieldCap20;
+                    myChart.data.datasets[4].data[i] = fieldCap40;
+                    myChart.data.datasets[5].data[i] = fieldCap60;
+
+            }
         myChart.update();
     }
 

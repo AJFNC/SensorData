@@ -39,6 +39,7 @@ namespace SensorData.Controllers
             var spot = await _context.Spots.ToListAsync();      //Para ser usado na conversão de Frel para Umid%
             var frequency = await _context.Frequencies
                 .ToListAsync();
+
             if (frequency == null)
             {
                 return NotFound();
