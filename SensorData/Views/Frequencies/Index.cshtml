@@ -11,14 +11,14 @@
     float frl1Model;
     float frl2Model;
     float frl3Model;
-    String[]? labelsArray = new String[300];
-    float[]? frl1Array = new float[300];
-    float[]? frl2Array = new float[300];
-    float[]? frl3Array = new float[300];
+    String[]? labelsArray = new String[350];
+    float[]? frl1Array = new float[350];
+    float[]? frl2Array = new float[350];
+    float[]? frl3Array = new float[350];
 
-    float[]? frl1ArrayAvg = new float[300];
-    float[]? frl2ArrayAvg = new float[300];
-    float[]? frl3ArrayAvg = new float[300];
+    float[]? frl1ArrayAvg = new float[350];
+    float[]? frl2ArrayAvg = new float[350];
+    float[]? frl3ArrayAvg = new float[350];
 
     float A;
     float B;
@@ -35,11 +35,11 @@
     var indexT = 0;
     var indexTT = 0;
 
-    Frequency[] itemT = new Frequency[300];
+    Frequency[] itemT = new Frequency[350];
 
 
     Frequency[] tempItem10 = new Frequency[10];
-    Frequency[] tempItemArr = new Frequency[3000];
+    Frequency[] tempItemArr = new Frequency[350];
 
     var initialHour = 0;
     var initialMinute = 0;
@@ -90,7 +90,7 @@
     </thead>
     <tbody>
 
-        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-48)).Where(t => t.Sensor_Id == sensorSpot).OrderByDescending(o => o.Id).ToList())
+        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-15)).Where(t => t.Sensor_Id == sensorSpot).OrderByDescending(o => o.Id).ToList())
         {
 
             <tr>
@@ -142,7 +142,7 @@
 
 
 
-        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-48)).Where(t => t.Sensor_Id == sensorSpot).ToList())
+        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-15)).Where(t => t.Sensor_Id == sensorSpot).ToList())
         {
 
             labelsModel = item.ReadDateTime.ToString();
@@ -151,7 +151,7 @@
             frl3Model = item.Frl3;
 
 
-            //Console.WriteLine(index + " " + item.Frl1 + " " + item.Frl2 + " " + item.Frl3 + " " + item.ReadDateTime.Hour + " " + item.ReadDateTime.Minute);
+            Console.WriteLine(index + " " + item.Frl1 + " " + item.Frl2 + " " + item.Frl3 + " " + item.ReadDateTime.Hour + " " + item.ReadDateTime.Minute);
 
 
             labelsArray[index] = labelsModel;
@@ -262,39 +262,49 @@
             initialMinute = tempItemArr[i].ReadDateTime.Minute;
             //index10 = i;    //Maybe needs to be commented
 
-            if (i + 1 >= 300)
+            if (i + 1 >= 350)
                 break;
 
             if (tempItemArr[i + 1] == null)
             {
+            //////////////////////////////////// Vamos ver se dá certo, se não retirar este código daqui
+            
+                @:(dtLabels[indexJS] = '@labelsArray[i]');
+                @:(dtFrl1[indexJS] = '@frl1Array[i]'.replace(',', '.'));
+                @:(dtFrl2[indexJS] = '@frl2Array[i]'.replace(',', '.'));
+                @:(dtFrl3[indexJS] = '@frl3Array[i]'.replace(',', '.'));
+
+            /////////////////////////////////// Deu certo, pegou o último registro
+
                 break;
             }
-
-
-            if (tempItemArr[i + 1].ReadDateTime.Hour <= initialHour)
-            {
-                if (tempItemArr[i + 1].ReadDateTime.Minute < initialMinute + 3)
+            else{
+                if (tempItemArr[i + 1].ReadDateTime.Hour <= initialHour)
                 {
-                    continue;
-
+                    if (tempItemArr[i + 1].ReadDateTime.Minute < initialMinute + 3)
+                    {
+                        continue;
+                    }
                 }
-                
+
             }
+
+
             //Save only the last reg transmitted
 
             Console.WriteLine(tempItemArr[i].ReadDateTime + " " + tempItemArr[i].Frl1 + " " + tempItemArr[i].Frl2 + " " + tempItemArr[i].Frl3);
 
-            if (i >= 300)
+            if (i >= 350)
                         break;
 
             ////////////////////////////
 
-            if (indexT >= 300)
-                break;
-        //itemT[indexT] = tempItemArr[i];
+            //if (indexT >= 350)
+            //    break;
+            //itemT[indexT] = tempItemArr[i];
 
-            if (tempItemArr[i] == null)
-                    break;
+            //if (tempItemArr[i] == null)
+            //        break;
 
             Console.WriteLine("Datas separadas = " + tempItemArr[i].ReadDateTime + " " + indexT);
 
@@ -316,8 +326,8 @@
         }
 
 
-            for (let i = 0; i < dtLabels.length; i++) {
-                if (dtLabels[i] == 0)
+            for (let i = 0; i <= dtLabels.length; i++) {
+                if (dtLabels[i] == null)
                     break;
 
                     myChart.data.labels[i] = dtLabels[i];
@@ -327,6 +337,8 @@
                     myChart.data.datasets[3].data[i] = fieldCap20;
                     myChart.data.datasets[4].data[i] = fieldCap40;
                     myChart.data.datasets[5].data[i] = fieldCap60;
+
+                    console.log("JS index = ", i);
 
             }
         myChart.update();
