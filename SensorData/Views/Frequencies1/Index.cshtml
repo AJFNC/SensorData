@@ -16,8 +16,29 @@
     float[]? frl2Array = new float[150];
     float[]? frl3Array = new float[150];
 
-    int sensorSpot = 3;
+    int sensorSpot = 2;                 // 3;   //para teste usaremos o 2, para publicar volta o 3
     var index = 0;
+
+    float[] avgFrl1 = new float[10];
+    float[] avgFrl2 = new float[10];
+    float[] avgFrl3 = new float[10];
+
+    var indexT = 0;
+    var indexTT = 0;
+
+    Frequency[] itemT = new Frequency[350];
+
+
+    Frequency[] tempItem10 = new Frequency[10];
+    Frequency[] tempItemArr = new Frequency[350];
+
+    Frequency[] tempItemArrT = new Frequency[350];
+
+    List<Frequency> freqList = new List<Frequency>();
+
+    var initialHour = 0;
+    var initialMinute = 0;
+
 
 
 }
@@ -42,58 +63,12 @@
 </div>
 
 <canvas class="my-4 w-100" id="lineChart" width="900" height="380"></canvas>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Sensor_Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Frl1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Frl2)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Frl3)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReadDateTime)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-186)).Where(t => t.Sensor_Id == sensorSpot).OrderByDescending(o => o.Id).ToList())
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Sensor_Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Frl1)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Frl2)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Frl3)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReadDateTime)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a class="nav-link" asp-area="" asp-controller="Frequencies1" asp-action="ViewTable">Tabela</a>
+    </div>
 
-
-
+</div>
 
 <script src="../lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -102,33 +77,51 @@
 
 <script src="../lib/bootstrap/dist/css/dashboard.css"></script>
 <script src="../lib/bootstrap/dist/css/dashboard.rtl.css"></script>
-@*<script src="../lib/bootstrap/dist/js/dashboard.js"></script>*@
+
 
 
 <script>
     console.log("Teste de console no javascript");
     // Graphs
     const ctxA = document.getElementById('lineChart');
+
+
+
     createGraphic(ctxA);
     function createGraphic(ctx) {
 
-    @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-186)).Where(t => t.Sensor_Id == sensorSpot).ToList())
+
+
+    @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-24)).Where(t => t.Sensor_Id == sensorSpot).ToList())
     {
-        Console.Write(item.Sensor_Id.ToString() + " " + item.Frl1 + " " + item.Frl2 + " " + item.Frl3 + " " + item.ReadDateTime.Ticks);
+
         labelsModel = item.ReadDateTime.ToString();
         frl1Model = item.Frl1;
         frl2Model = item.Frl2;
         frl3Model = item.Frl3;
+
+
+        Console.WriteLine(index + " " + item.Frl1 + " " + item.Frl2 + " " + item.Frl3 + " " + item.ReadDateTime.Hour + " " + item.ReadDateTime.Minute);
+
+
         labelsArray[index] = labelsModel;
         frl1Array[index] = frl1Model;
         frl2Array[index] = frl2Model;
         frl3Array[index] = frl3Model;
+        tempItemArr[index] = item;
+
+        tempItemArrT = tempItemArr;
+
+
         index++;
         if (index >= labelsArray.Length)
         {
             break;
         }
-    };
+    }
+        ;
+
+
         //// Graphs
         //const ctx = document.getElementById('lineChart');
         // eslint-disable-next-line no-unused-vars
@@ -137,16 +130,16 @@
             data: {
                 labels: [],
                 datasets: [{
-                    label: "Frl1",
+                    label: "SS: 0-20",
                     data: [],
                     lineTension: 0,
                     backgroundColor: 'transparent',
-                    borderColor: '#007bff',
+                    borderColor: '#008bff',
                     borderWidth: 4,
                     pointBackgroundColor: '#008bff'
                 },
                 {
-                    label: "Frl2",
+                    label: "SS: 20-40",
                     data: [],
                     lineTension: 0,
                     backgroundColor: 'transparent',
@@ -155,7 +148,7 @@
                     pointBackgroundColor: '#ff8b00'
                 },
                 {
-                    label: "Frl3",
+                    label: "SS: 40-60",
                     data: [],
                     lineTension: 0,
                     backgroundColor: 'transparent',
@@ -164,7 +157,7 @@
                     pointBackgroundColor: '#00ff8b'
                 },
                 {
-                    label: "Capacidade de campo Banana: 0-20",
+                    label: "Capacidade de campo SS: 0-20",
                     data: [],
                     lineTension: 0,
                     backgroundColor: 'transparent',
@@ -173,7 +166,7 @@
                     pointBackgroundColor: '#008bff'
                 },
                 {
-                    label: "Capacidade de campo Banana: 20-40",
+                    label: "Capacidade de campo SS: 20-40",
                     data: [],
                     lineTension: 0,
                     backgroundColor: 'transparent',
@@ -182,7 +175,7 @@
                     pointBackgroundColor: '#ff8b00'
                 },
                 {
-                    label: "Capacidade de campo Banana: 40-60",
+                    label: "Capacidade de campo SS: 40-60",
                     data: [],
                     lineTension: 0,
                     backgroundColor: 'transparent',
@@ -210,23 +203,91 @@
         var dtFrl2 = new Array();
         var dtFrl3 = new Array();
         var indexJS = 0;
-        var fieldCap20 = 15.94;
-        var fieldCap40 = 15.572;
-        var fieldCap60 = 9.976;
-
+        var fieldCap20 = 15.181;
+        var fieldCap40 = 9.325;
+        var fieldCap60 = 10.153;
 
 
     @for (var i = 0; i < labelsArray.Length; i++)
     {
+        if (tempItemArr[i] == null)
+        {
+            break;
+        }
+
+        initialHour = tempItemArr[i].ReadDateTime.Hour;
+        initialMinute = tempItemArr[i].ReadDateTime.Minute;
+        //index10 = i;    //Maybe needs to be commented
+
+        if (i + 1 >= 350)
+            break;
+
+        if (tempItemArr[i + 1] == null)
+        {
+            //////////////////////////////////// Vamos ver se dá certo, se não retirar este código daqui
+
+            @:(dtLabels[indexJS] = '@labelsArray[i]');
+            @:(dtFrl1[indexJS] = '@frl1Array[i]'.replace(',', '.'));
+            @:(dtFrl2[indexJS] = '@frl2Array[i]'.replace(',', '.'));
+            @:(dtFrl3[indexJS] = '@frl3Array[i]'.replace(',', '.'));
+
+            /////////////////////////////////// Deu certo, pegou o último registro
+
+            break;
+        }
+        else
+        {
+            if (tempItemArr[i + 1].ReadDateTime.Hour <= initialHour)
+            {
+                if (tempItemArr[i + 1].ReadDateTime.Minute < initialMinute + 3)
+                {
+                    continue;
+                }
+            }
+
+        }
+
+
+        //Save only the last reg transmitted
+
+        Console.WriteLine(tempItemArr[i].ReadDateTime + " " + tempItemArr[i].Frl1 + " " + tempItemArr[i].Frl2 + " " + tempItemArr[i].Frl3 + " Graph");
+
+        if (i >= 350)
+            break;
+
+        ////////////////////////////
+
+        //if (indexT >= 350)
+        //    break;
+        //itemT[indexT] = tempItemArr[i];
+
+        //if (tempItemArr[i] == null)
+        //        break;
+
+        Console.WriteLine("Datas separadas = " + tempItemArr[i].ReadDateTime + " " + indexT);
+
+        indexT++;
+
+
+        ////////////////////////////
+
+        Console.WriteLine("Grupo = " + i);
+
         @:(dtLabels[indexJS] = '@labelsArray[i]');
         @:(dtFrl1[indexJS] = '@frl1Array[i]'.replace(',', '.'));
         @:(dtFrl2[indexJS] = '@frl2Array[i]'.replace(',', '.'));
         @:(dtFrl3[indexJS] = '@frl3Array[i]'.replace(',', '.'));
+
         @:(indexJS++);
+
+
     }
-                for (let i = 0; i < dtLabels.length; i++) {
-            if (dtLabels[i] == 0)
+
+
+                for (let i = 0; i <= dtLabels.length; i++) {
+            if (dtLabels[i] == null)
                 break;
+
             myChart.data.labels[i] = dtLabels[i];
             myChart.data.datasets[0].data[i] = dtFrl1[i];
             myChart.data.datasets[1].data[i] = dtFrl2[i];
@@ -234,6 +295,9 @@
             myChart.data.datasets[3].data[i] = fieldCap20;
             myChart.data.datasets[4].data[i] = fieldCap40;
             myChart.data.datasets[5].data[i] = fieldCap60;
+
+            console.log("JS index = ", i);
+
         }
         myChart.update();
     }
