@@ -8,6 +8,16 @@
     DateTime PegaHoraBrasilia() => TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
     var dateTimeNow = PegaHoraBrasilia().ToLocalTime();
 
+
+    Frequency[] tempItemArr = new Frequency[350];
+    List<Frequency> freqList = new List<Frequency>();
+
+    var initialHour = 0;
+    var initialMinute = 0;
+
+    var index = 0;
+    var indexT = 0;
+
 }
 
 <h2>Tabela</h2>
@@ -35,27 +45,93 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-24)).Where(t => t.Sensor_Id == sensorSpot).OrderByDescending(o => o.ReadDateTime).ToList())
+        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-24)).Where(t => t.Sensor_Id == sensorSpot).ToList())                          //OrderByDescending(o => o.ReadDateTime).ToList())
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sensor_Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Frl1)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Frl2)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Frl3)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReadDateTime)
-            </td>
 
-        </tr>
-}
+            tempItemArr[index] = item;
+
+
+            index++;
+            if (index >= tempItemArr.Length)
+            {
+                break;
+            }
+
+        }
+
+        @for (var i = 0; i < tempItemArr.Length; i++)
+        {
+            if (tempItemArr[i] == null)
+            {
+                break;
+            }
+
+            initialHour = tempItemArr[i].ReadDateTime.Hour;
+            initialMinute = tempItemArr[i].ReadDateTime.Minute;
+
+            if (i + 1 >= 350)
+                break;
+
+            if (tempItemArr[i + 1] == null)
+            {
+
+                freqList.Add(tempItemArr[i]);
+
+                break;
+            }
+            else
+            {
+                if (tempItemArr[i + 1].ReadDateTime.Hour <= initialHour)
+                {
+                    if (tempItemArr[i + 1].ReadDateTime.Minute < initialMinute + 3)
+                    {
+                        continue;
+                    }
+                }
+
+            }
+
+
+            //Save only the last reg transmitted
+
+            if (i >= 350)
+                break;
+
+
+            freqList.Add(tempItemArr[i]);
+
+            indexT++;
+
+
+        }
+
+
+
+        @foreach(var item in freqList.OrderByDescending(o => o.ReadDateTime)){
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sensor_Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Frl1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Frl2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Frl3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReadDateTime)
+                </td>
+
+            </tr>
+
+
+        }
+        
+
     </tbody>
 </table>
 <div class="btn-toolbar mb-2 mb-md-0">

@@ -24,7 +24,7 @@
     float[] avgFrl3 = new float[10];
 
     var indexT = 0;
-    var indexTT = 0;
+
 
     Frequency[] itemT = new Frequency[350];
 
@@ -81,7 +81,6 @@
 
 
 <script>
-    console.log("Teste de console no javascript");
     // Graphs
     const ctxA = document.getElementById('lineChart');
 
@@ -92,34 +91,30 @@
 
 
 
-    @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-24)).Where(t => t.Sensor_Id == sensorSpot).ToList())
-    {
-
-        labelsModel = item.ReadDateTime.ToString();
-        frl1Model = item.Frl1;
-        frl2Model = item.Frl2;
-        frl3Model = item.Frl3;
-
-
-        Console.WriteLine(index + " " + item.Frl1 + " " + item.Frl2 + " " + item.Frl3 + " " + item.ReadDateTime.Hour + " " + item.ReadDateTime.Minute);
-
-
-        labelsArray[index] = labelsModel;
-        frl1Array[index] = frl1Model;
-        frl2Array[index] = frl2Model;
-        frl3Array[index] = frl3Model;
-        tempItemArr[index] = item;
-
-        tempItemArrT = tempItemArr;
-
-
-        index++;
-        if (index >= labelsArray.Length)
+        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-24)).Where(t => t.Sensor_Id == sensorSpot).ToList())
         {
-            break;
-        }
-    }
-        ;
+
+            labelsModel = item.ReadDateTime.ToString();
+            frl1Model = item.Frl1;
+            frl2Model = item.Frl2;
+            frl3Model = item.Frl3;
+
+
+            labelsArray[index] = labelsModel;
+            frl1Array[index] = frl1Model;
+            frl2Array[index] = frl2Model;
+            frl3Array[index] = frl3Model;
+            tempItemArr[index] = item;
+
+            tempItemArrT = tempItemArr;
+
+
+            index++;
+            if (index >= labelsArray.Length)
+            {
+                break;
+            }
+        };
 
 
         //// Graphs
@@ -198,6 +193,8 @@
                 }
             }
         });
+
+
         var dtLabels = new Array();         //Array Javascript
         var dtFrl1 = new Array();
         var dtFrl2 = new Array();
@@ -208,83 +205,63 @@
         var fieldCap60 = 10.153;
 
 
-    @for (var i = 0; i < labelsArray.Length; i++)
-    {
-        if (tempItemArr[i] == null)
+        @for (var i = 0; i < labelsArray.Length; i++)
         {
-            break;
-        }
+            if (tempItemArr[i] == null)
+            {
+                break;
+            }
 
-        initialHour = tempItemArr[i].ReadDateTime.Hour;
-        initialMinute = tempItemArr[i].ReadDateTime.Minute;
-        //index10 = i;    //Maybe needs to be commented
+            initialHour = tempItemArr[i].ReadDateTime.Hour;
+            initialMinute = tempItemArr[i].ReadDateTime.Minute;
 
-        if (i + 1 >= 350)
-            break;
+            if (i + 1 >= 350)
+                break;
 
-        if (tempItemArr[i + 1] == null)
-        {
-            //////////////////////////////////// Vamos ver se dá certo, se não retirar este código daqui
+            if (tempItemArr[i + 1] == null)
+            {
+
+                @:(dtLabels[indexJS] = '@labelsArray[i]');
+                @:(dtFrl1[indexJS] = '@frl1Array[i]'.replace(',', '.'));
+                @:(dtFrl2[indexJS] = '@frl2Array[i]'.replace(',', '.'));
+                @:(dtFrl3[indexJS] = '@frl3Array[i]'.replace(',', '.'));
+
+                break;
+            }
+            else
+            {
+                if (tempItemArr[i + 1].ReadDateTime.Hour <= initialHour)
+                {
+                    if (tempItemArr[i + 1].ReadDateTime.Minute < initialMinute + 3)
+                    {
+                        continue;
+                    }
+                }
+
+            }
+
+
+            //Save only the last reg transmitted
+
+            if (i >= 350)
+                break;
+
+
+            indexT++;
+
 
             @:(dtLabels[indexJS] = '@labelsArray[i]');
             @:(dtFrl1[indexJS] = '@frl1Array[i]'.replace(',', '.'));
             @:(dtFrl2[indexJS] = '@frl2Array[i]'.replace(',', '.'));
             @:(dtFrl3[indexJS] = '@frl3Array[i]'.replace(',', '.'));
 
-            /////////////////////////////////// Deu certo, pegou o último registro
+            @:(indexJS++);
 
-            break;
-        }
-        else
-        {
-            if (tempItemArr[i + 1].ReadDateTime.Hour <= initialHour)
-            {
-                if (tempItemArr[i + 1].ReadDateTime.Minute < initialMinute + 3)
-                {
-                    continue;
-                }
-            }
 
         }
 
 
-        //Save only the last reg transmitted
-
-        Console.WriteLine(tempItemArr[i].ReadDateTime + " " + tempItemArr[i].Frl1 + " " + tempItemArr[i].Frl2 + " " + tempItemArr[i].Frl3 + " Graph");
-
-        if (i >= 350)
-            break;
-
-        ////////////////////////////
-
-        //if (indexT >= 350)
-        //    break;
-        //itemT[indexT] = tempItemArr[i];
-
-        //if (tempItemArr[i] == null)
-        //        break;
-
-        Console.WriteLine("Datas separadas = " + tempItemArr[i].ReadDateTime + " " + indexT);
-
-        indexT++;
-
-
-        ////////////////////////////
-
-        Console.WriteLine("Grupo = " + i);
-
-        @:(dtLabels[indexJS] = '@labelsArray[i]');
-        @:(dtFrl1[indexJS] = '@frl1Array[i]'.replace(',', '.'));
-        @:(dtFrl2[indexJS] = '@frl2Array[i]'.replace(',', '.'));
-        @:(dtFrl3[indexJS] = '@frl3Array[i]'.replace(',', '.'));
-
-        @:(indexJS++);
-
-
-    }
-
-
-                for (let i = 0; i <= dtLabels.length; i++) {
+        for (let i = 0; i <= dtLabels.length; i++) {
             if (dtLabels[i] == null)
                 break;
 
@@ -295,8 +272,6 @@
             myChart.data.datasets[3].data[i] = fieldCap20;
             myChart.data.datasets[4].data[i] = fieldCap40;
             myChart.data.datasets[5].data[i] = fieldCap60;
-
-            console.log("JS index = ", i);
 
         }
         myChart.update();
