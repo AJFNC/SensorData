@@ -6,7 +6,7 @@
 
     int sensorSpot = 2;
     DateTime PegaHoraBrasilia() => TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
-    var dateTimeNow = PegaHoraBrasilia().ToLocalTime();
+    //var dateTimeNow = PegaHoraBrasilia().ToLocalTime();
 
 
     Frequency[] tempItemArr = new Frequency[350];
@@ -45,7 +45,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-24)).Where(t => t.Sensor_Id == sensorSpot).ToList())                          //OrderByDescending(o => o.ReadDateTime).ToList())
+        @foreach (var item in Model.Where(t => t.ReadDateTime >= PegaHoraBrasilia().AddHours(-24)).Where(t => t.Sensor_Id == sensorSpot).ToList())                          //OrderByDescending(o => o.ReadDateTime).ToList())
         {
 
             tempItemArr[index] = item;

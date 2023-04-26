@@ -6,7 +6,7 @@
 
     int sensorSpot = 2;             // 3;   //para teste usaremos o 2, para publicar volta o 3
     DateTime PegaHoraBrasilia() => TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
-    var dateTimeNow = PegaHoraBrasilia().ToLocalTime();
+    //var dateTimeNow = PegaHoraBrasilia().ToLocalTime();
 
     Frequency[] tempItemArr = new Frequency[350];
     List<Frequency> freqList = new List<Frequency>();
@@ -44,7 +44,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Where(t => t.ReadDateTime >= dateTimeNow.AddHours(-24)).Where(t => t.Sensor_Id == sensorSpot).ToList())                          //OrderByDescending(o => o.ReadDateTime).ToList())
+        @foreach (var item in Model.Where(t => t.ReadDateTime >= PegaHoraBrasilia().AddHours(-24)).Where(t => t.Sensor_Id == sensorSpot).ToList())                          //OrderByDescending(o => o.ReadDateTime).ToList())
         {
 
             tempItemArr[index] = item;
@@ -93,8 +93,6 @@
 
 
             //Save only the last reg transmitted
-
-            Console.WriteLine(tempItemArr[i].ReadDateTime + " " + tempItemArr[i].Frl1 + " " + tempItemArr[i].Frl2 + " " + tempItemArr[i].Frl3 + " Tabela S");
 
             if (i >= 350)
                 break;
