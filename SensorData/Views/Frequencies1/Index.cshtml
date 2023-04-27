@@ -43,7 +43,7 @@
 
 }
 
-<h2>24 horas de leituras de dados</h2>
+<h2>12 horas de leituras de dados</h2>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h2 class="h2">Umidade de solo do sensor (%): Bananas</h2>
@@ -91,10 +91,10 @@
 
 
 
-    @foreach (var item in Model.Where(t => t.ReadDateTime >= PegaHoraBrasilia().AddHours(-24)).Where(t => t.Sensor_Id == sensorSpot).ToList())
+    @foreach (var item in Model.Where(t => t.ReadDateTime >= PegaHoraBrasilia().AddHours(-18)).Where(t => t.Sensor_Id == sensorSpot).ToList())
         {
             //item.ReadDateTime.AddHours(3);                            //Time correction adding 3 hours
-            labelsModel = item.ReadDateTime.AddHours(3).ToString();     //Time correction adding 3 hours
+            labelsModel = item.ReadDateTime.AddHours(3).ToString("dd/MM/yyyy HH:mm");     //Time correction adding 3 hours
             frl1Model = item.Frl1;
             frl2Model = item.Frl2;
             frl3Model = item.Frl3;
@@ -152,7 +152,7 @@
                     pointBackgroundColor: '#00ff8b'
                 },
                 {
-                    label: "Capacidade de campo SS: 0-20",
+                    label: "Capacidade de campo SS: 0-20 = 15.181",
                     data: [],
                     lineTension: 0,
                     backgroundColor: 'transparent',
@@ -161,7 +161,7 @@
                     pointBackgroundColor: '#008bff'
                 },
                 {
-                    label: "Capacidade de campo SS: 20-40",
+                    label: "Capacidade de campo SS: 20-40 = 9.325",
                     data: [],
                     lineTension: 0,
                     backgroundColor: 'transparent',
@@ -170,7 +170,7 @@
                     pointBackgroundColor: '#ff8b00'
                 },
                 {
-                    label: "Capacidade de campo SS: 40-60",
+                    label: "Capacidade de campo SS: 40-60 = 10.153",
                     data: [],
                     lineTension: 0,
                     backgroundColor: 'transparent',
@@ -271,9 +271,9 @@
             myChart.data.datasets[0].data[i] = dtFrl1[i];
             myChart.data.datasets[1].data[i] = dtFrl2[i];
             myChart.data.datasets[2].data[i] = dtFrl3[i];
-            myChart.data.datasets[3].data[i] = fieldCap20;
-            myChart.data.datasets[4].data[i] = fieldCap40;
-            myChart.data.datasets[5].data[i] = fieldCap60;
+            //myChart.data.datasets[3].data[i] = fieldCap20;
+            //myChart.data.datasets[4].data[i] = fieldCap40;
+            //myChart.data.datasets[5].data[i] = fieldCap60;
 
         }
         myChart.update();
