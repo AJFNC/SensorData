@@ -50,7 +50,7 @@
 }
 
 
-<h2>4 horas de leituras de dados</h2>
+<h2>24 horas de leituras de dados</h2>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h2 class="h2">Umidade de solo do sensor (%): SS</h2>
@@ -100,8 +100,8 @@
 
     @foreach (var item in Model.Where(t => t.ReadDateTime >= PegaHoraBrasilia().AddHours(-24)).Where(t => t.Sensor_Id == sensorSpot).ToList())
         {
-
-            labelsModel = item.ReadDateTime.ToString();
+            //item.ReadDateTime.AddHours(3);                            //Time correction adding 3 hours
+            labelsModel = item.ReadDateTime.AddHours(3).ToString();     //Time correction adding 3 hours
             frl1Model = item.Frl1;
             frl2Model = item.Frl2;
             frl3Model = item.Frl3;
