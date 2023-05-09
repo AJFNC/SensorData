@@ -69,7 +69,7 @@ jobs:
 
     - name: Publish - Test
       run: |
-        curl http://${{ secrets.SERVER }}:5028/api/Frequencies
+        ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.USERNAME }}@${{ secrets.SERVER }}
 
 
 
