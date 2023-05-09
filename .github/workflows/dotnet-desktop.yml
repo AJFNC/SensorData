@@ -69,7 +69,7 @@ jobs:
 
     - name: Publish - Test
       run: |
-        curl http://152.67.44.154:5028/api/Frequencies
+        curl http://${{ secrets.SERVER }}:5028/api/Frequencies
 
 
 
