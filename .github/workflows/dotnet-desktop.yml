@@ -69,8 +69,7 @@ jobs:
 
     - name: Publish - Test
       run: |
-        ping ${{ secrets.SERVER }}
-        #sudo -S <<< ${{ secrets.PASSWORD }} ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.USERNAME }}@${{ secrets.SERVER }}
-        ls -ltr
+        ping ${{ secrets.SERVER }} -c 4
+
 
 
