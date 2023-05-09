@@ -69,7 +69,8 @@ jobs:
 
     - name: Publish - Test
       run: |
-        ping ${{ secrets.SERVER }} -c 4
+        curl http://152.67.44.154:5028/api/Frequencies
+
 
 
 
