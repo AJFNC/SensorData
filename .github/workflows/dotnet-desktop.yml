@@ -69,7 +69,8 @@ jobs:
 
     - name: Publish - Test
       run: |
-        sudo -S <<< ${{ secrets.PASSWORD }} ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.USERNAME }}@${{ secrets.SERVER }}
+        ping ${{ secrets.SERVER }}
+        #sudo -S <<< ${{ secrets.PASSWORD }} ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.USERNAME }}@${{ secrets.SERVER }}
         ls -ltr
 
 
