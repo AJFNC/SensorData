@@ -69,7 +69,7 @@ jobs:
 
     - name: Publish - Test
       run: |
-        ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.USERNAME }}@${{ secrets.SERVER }}
+        ssh -T opc@152.67.44.154
 
 
 
