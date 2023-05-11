@@ -67,9 +67,19 @@ jobs:
     - name: Execute unit tests
       run: dotnet test
 
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v2
+      with: 
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        name: github-actions
+        known_hosts: ${{ secrets.KNOWN_HOSTS }}
+        config: config
+        if_key_exists: fail
+
     - name: Publish - Test
       run: |
-        ssh -i AJFNC/SensorData/Sensordata/github-actions opc@152.67.44.154
+        ssh -i ${{ secrets.SSH_PRIVATE_KEY }} opc@152.67.44.154
+        ls -ltr
 
 
 
