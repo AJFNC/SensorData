@@ -73,7 +73,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         name: github-actions
         known_hosts: ${{ secrets.KNOWN_HOSTS }}
-        config: config
+        config: ${{ secrets.CONFIG }}
         if_key_exists: fail
 
     - name: Publish - Test
