@@ -78,7 +78,7 @@ jobs:
 
     - name: Publish - Test
       run: |
-        ssh opc@152.67.44.154
+        ssh -i ~/.ssh/github-actions opc@152.67.44.154
         ls -ltr
 
 
