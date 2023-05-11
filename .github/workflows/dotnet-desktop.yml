@@ -80,6 +80,7 @@ jobs:
       run: |
         ssh -i ~/.ssh/github-actions opc@152.67.44.154
         ls -ltr
+        pwd
 
 
 
