@@ -60,12 +60,12 @@ jobs:
 
     # Build 
     - name: Build
-      run: dotnet build
+      run: dotnet build --no-restore
 
 
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test
+      run: dotnet test --no-build --verbosity normal
 
     - name: Install SSH key
       uses: shimataro/ssh-key-action@v2
