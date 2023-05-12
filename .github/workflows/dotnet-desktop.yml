@@ -60,7 +60,7 @@ jobs:
 
     # Build 
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no- --configuration Release
 
 
     # Execute all unit tests in the solution
