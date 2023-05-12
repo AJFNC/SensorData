@@ -77,6 +77,10 @@ jobs:
         if_key_exists: fail
 
     - name: Publish - Test
+      run: dotnet publish
+      
+
+    - name: SSH - Test
       run: |
         ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }} ${{ secrets.USERNAME }}@${{ secrets.SERVER }}
         ls -ltr
