@@ -76,9 +76,13 @@ jobs:
         config: ${{ secrets.CONFIG }}
         if_key_exists: fail
 
-    - name: Publish - Test
+    - name: Publish
       run: dotnet publish
       
+    - name: Deploy - Test
+      run: rsync -rv --dry-run  -P -e 'ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}' ~/SensorData/* ${{ secrets.USERNAME }}@${{ secrets.SERVER }}:/home/opc/SensorData
+      
+      #-rv -P -e 'ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}' ~/SensorData/* ${{ secrets.USERNAME }}@${{ secrets.SERVER }}:/home/opc/SensorData
 
     - name: SSH - Test
       run: |
