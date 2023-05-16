@@ -80,8 +80,8 @@ jobs:
 
     - name: SSH - Test
       run: |
-        #pwd -e 'ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}' pwd; ls -ltr
-        ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }} ${{ secrets.USERNAME }}@${{ secrets.SERVER }} ./teste.sh; ./teste2.sh
+        ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }} ${{ secrets.USERNAME }}@${{ secrets.SERVER }} ./teste.sh
+        ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }} ${{ secrets.USERNAME }}@${{ secrets.SERVER }} ./teste2.sh
 
 
 
