@@ -81,7 +81,7 @@ jobs:
     - name: SSH - Test
       run: |
         #pwd -e 'ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}' pwd; ls -ltr
-        ssh -t -i ${{ secrets.SSH_PRIVATE_KEY_PATH }} ${{ secrets.USERNAME }}@${{ secrets.SERVER }} pwd; ls -ltr
+        ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }} ${{ secrets.USERNAME }}@${{ secrets.SERVER }} ./teste.sh
 
 
 
