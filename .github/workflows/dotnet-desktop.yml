@@ -73,15 +73,16 @@ jobs:
     - name: Publish
       run: dotnet publish
       
-    - name: Deploy - Test
-      run: rsync -rv --dry-run  -P -e 'ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}' /home/runner/work//SensorData/* opc@${{ secrets.SERVER }}:/home/opc/SensorData
-      
-      #-rv -P -e 'ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}' /home/runner/work//SensorData/* ${{ secrets.USERNAME }}@${{ secrets.SERVER }}:/home/opc/SensorData
-
-    - name: SSH - Test
+    - name: Deploy to the OCI VM Server
       run: |
-        ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }} ${{ secrets.USERNAME }}@${{ secrets.SERVER }} ./teste.sh
-        ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }} ${{ secrets.USERNAME }}@${{ secrets.SERVER }} ./teste2.sh
+        #rsync -rv --dry-run  -P -e 'ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}' /home/runner/work//SensorData/* opc@${{ secrets.SERVER }}:/home/opc/SensorData
+      
+        rsync -rv -P -e 'ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}' /home/runner/work//SensorData/* ${{ secrets.USERNAME }}@${{ secrets.SERVER }}:/home/opc/SensorData
+
+    - name: Run the SensorData and Sensor services
+      run: |
+        ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }} ${{ secrets.USERNAME }}@${{ secrets.SERVER }} ./publishSD.sh
+        ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }} ${{ secrets.USERNAME }}@${{ secrets.SERVER }} ./publishS.sh
 
 
 
