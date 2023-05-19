@@ -77,7 +77,7 @@ jobs:
       run: |
         #rsync -rv --dry-run  -P -e 'ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}' /home/runner/work//SensorData/* opc@${{ secrets.SERVER }}:/home/opc/SensorData
       
-        rsync -rv -P -e 'ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}' /home/runner/work//SensorData/* ${{ secrets.USERNAME }}@${{ secrets.SERVER }}:/home/opc/SensorData
+        rsync -rv -P -e 'ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}' /home/runner/work/SensorData/* ${{ secrets.USERNAME }}@${{ secrets.SERVER }}:/home/opc/SensorData
 
     - name: Run the SensorData and Sensor services
       run: |
