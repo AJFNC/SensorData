@@ -98,7 +98,7 @@
 
 
 
-    @foreach (var item in Model.Where(t => t.ReadDateTime >= PegaHoraBrasilia().AddHours(-24)).Where(t => t.Sensor_Id == sensorSpot).ToList())
+    @foreach (var item in Model.Where(t => t.ReadDateTime >= PegaHoraBrasilia().AddHours(-28)).Where(t => t.Sensor_Id == sensorSpot).ToList())
         {
             //item.ReadDateTime.AddHours(3);                            //Time correction adding 3 hours
             labelsModel = item.ReadDateTime.AddHours(3).ToString("dd/MM/yyyy HH:mm");     //Time correction adding 3 hours
