@@ -44,7 +44,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Where(t => t.ReadDateTime >= PegaHoraBrasilia().AddHours(-18)).Where(t => t.Sensor_Id == sensorSpot).ToList())                          //OrderByDescending(o => o.ReadDateTime).ToList())
+        @foreach (var item in Model.Where(t => t.ReadDateTime >= PegaHoraBrasilia().AddHours(-28)).Where(t => t.Sensor_Id == sensorSpot).ToList())                          //OrderByDescending(o => o.ReadDateTime).ToList())
         {
             item.ReadDateTime = item.ReadDateTime.AddHours(3);         //Time correction adding 3 hours
             tempItemArr[index] = item;
