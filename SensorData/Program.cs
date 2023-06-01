@@ -1,3 +1,13 @@
+/// <summary>
+/// 
+/// This project has the intent to collect data regarding soil moisture from a LoRaWAN implemented 
+/// in a farm of experimental cocoa crop.
+/// 
+/// Author: Alexandre Cavalcanti
+/// Date: 05/31/2023
+/// 
+/// </summary>
+
 using Microsoft.EntityFrameworkCore;
 using SensorData.Models;
 

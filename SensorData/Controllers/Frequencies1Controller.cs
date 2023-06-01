@@ -1,4 +1,13 @@
-﻿using System;
+﻿/// <summary>
+/// 
+/// This code is to manipulate the Frequencies model from Bananas End Device to be presented as moisture on Views
+/// 
+/// Author: Alexandre Cavalcanti
+/// Date: 05/31/2023
+/// 
+/// </summary>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -194,7 +203,11 @@ namespace SensorData.Controllers
             {
                 return null;
             }
-
+            ///<summary>
+            ///
+            /// Convert frequencies into percent of soil moisture
+            /// 
+            /// </summary>
             foreach (Frequency item in frequency)
             {
 

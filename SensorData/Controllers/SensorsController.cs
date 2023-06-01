@@ -1,4 +1,13 @@
-﻿using System;
+﻿/// <summary>
+/// 
+/// This code is to manipulate the Sensors model to be presented on Views
+/// 
+/// Author: Alexandre Cavalcanti
+/// Date: 05/31/2023
+/// 
+/// </summary>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
