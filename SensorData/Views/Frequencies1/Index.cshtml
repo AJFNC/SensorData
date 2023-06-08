@@ -11,10 +11,10 @@
     float frl1Model;
     float frl2Model;
     float frl3Model;
-    String[]? labelsArray = new String[450];
-    float[]? frl1Array = new float[450];
-    float[]? frl2Array = new float[450];
-    float[]? frl3Array = new float[450];
+    String[]? labelsArray = new String[550];
+    float[]? frl1Array = new float[550];
+    float[]? frl2Array = new float[550];
+    float[]? frl3Array = new float[550];
 
     int sensorSpot = 3;   //para teste usaremos o 2, para publicar volta o 3
     var index = 0;
@@ -26,13 +26,13 @@
     var indexT = 0;
 
 
-    Frequency[] itemT = new Frequency[450];
+    Frequency[] itemT = new Frequency[550];
 
 
     Frequency[] tempItem10 = new Frequency[10];
-    Frequency[] tempItemArr = new Frequency[450];
+    Frequency[] tempItemArr = new Frequency[550];
 
-    Frequency[] tempItemArrT = new Frequency[450];
+    Frequency[] tempItemArrT = new Frequency[550];
 
     List<Frequency> freqList = new List<Frequency>();
 
@@ -215,7 +215,7 @@
             initialHour = tempItemArr[i].ReadDateTime.Hour;
             initialMinute = tempItemArr[i].ReadDateTime.Minute;
 
-            if (i + 1 >= 450)
+            if (i + 1 >= 550)
                 break;
 
             if (tempItemArr[i + 1] == null)
@@ -245,7 +245,7 @@
 
             //Save only the last reg transmitted
 
-            if (i >= 450)
+            if (i >= 550)
                 break;
 
 

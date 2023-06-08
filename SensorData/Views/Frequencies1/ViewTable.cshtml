@@ -8,7 +8,7 @@
     DateTime PegaHoraBrasilia() => TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
     //var dateTimeNow = PegaHoraBrasilia().ToLocalTime();
 
-    Frequency[] tempItemArr = new Frequency[450];
+    Frequency[] tempItemArr = new Frequency[550];
     List<Frequency> freqList = new List<Frequency>();
 
     var initialHour = 0;
@@ -69,7 +69,7 @@
             initialHour = tempItemArr[i].ReadDateTime.Hour;
             initialMinute = tempItemArr[i].ReadDateTime.Minute;
 
-            if (i + 1 >= 450)
+            if (i + 1 >= 550)
                 break;
 
             if (tempItemArr[i + 1] == null)
@@ -94,7 +94,7 @@
 
             //Save only the last reg transmitted
 
-            if (i >= 450)
+            if (i >= 550)
                 break;
 
             freqList.Add(tempItemArr[i]);
