@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SensorData.Models;
@@ -22,6 +21,7 @@ namespace Sensor.Controllers
 
         // GET: api/Frequencies
         [HttpGet]
+        //public async Task<ActionResult<IEnumerable<Frequency>>> GetFrequencies()
         public async Task<ActionResult<IEnumerable<Frequency>>> GetFrequencies()
         {
             if (_context.Frequencies == null)

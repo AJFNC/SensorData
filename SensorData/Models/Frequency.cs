@@ -19,5 +19,6 @@ namespace SensorData.Models
 
         [DisplayName("Hora")]
         public DateTime ReadDateTime { get; set;} = DateTime.Now.ToLocalTime();
+
     }
 }

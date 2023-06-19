@@ -9,6 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sensor", "Sensor\Sensor.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestSensorData", "TestSensorData\TestSensorData.csproj", "{313B7D56-1481-4BF2-809C-DC0E3EF1CE2E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XunitTestSensor", "XunitTestSensor\XunitTestSensor.csproj", "{291EFAD4-E488-484F-801F-77C49DA9AE0F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6259C2AC-BCE6-4773-AAD6-0861C81E89DB} = {6259C2AC-BCE6-4773-AAD6-0861C81E89DB}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +32,10 @@ Global
 		{313B7D56-1481-4BF2-809C-DC0E3EF1CE2E}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{313B7D56-1481-4BF2-809C-DC0E3EF1CE2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{313B7D56-1481-4BF2-809C-DC0E3EF1CE2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{291EFAD4-E488-484F-801F-77C49DA9AE0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{291EFAD4-E488-484F-801F-77C49DA9AE0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{291EFAD4-E488-484F-801F-77C49DA9AE0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{291EFAD4-E488-484F-801F-77C49DA9AE0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

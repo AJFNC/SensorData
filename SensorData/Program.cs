@@ -14,7 +14,7 @@ using SensorData.Models;
 
 namespace SensorData
 {
-    public class Program
+    public partial class Program
     {
 
         public static void Main(string[] args)
@@ -52,6 +52,10 @@ namespace SensorData
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
+
+
         }
+        
     }
+
 }
