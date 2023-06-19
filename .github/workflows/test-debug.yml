@@ -1,0 +1,60 @@
+# This workflow builds, tests, publishes and deploys this project into OCI VM Bluewater
+
+name: SensorData Tests in Debug
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    strategy:
+      matrix:
+        configuration: [Debug]
+
+    runs-on: ubuntu-latest   # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+
+    env:
+      Solution_Name: SensorData.sln           # Replace with your solution name, i.e. MyWpfApp.sln.
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.201
+
+
+    # You can test your matrix by printing the current dotnet version
+    - name: Display dotnet version
+      run: dotnet --version
+
+
+    # Restore the application to populate the obj folder with RuntimeIdentifiers
+    - name: Restore the application
+      run: dotnet restore                                                     #msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+      env:
+        Configuration: ${{ matrix.configuration }}
+
+
+    # Build 
+    - name: Build
+      run: dotnet build --no-restore
+
+
+    # Execute all unit tests in the solution
+    - name: Execute unit tests
+      run: dotnet test --no-build --verbosity normal
+
+
+
