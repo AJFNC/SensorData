@@ -13,8 +13,7 @@ namespace XunitTestSensor
     public class UnitTestSensorFrequencies
     {
 
-        //[Theory]
-        //[InlineData("/")]
+
         [Fact]
         public async Task Get_Return_All_Frequencies()
         {
@@ -35,6 +34,8 @@ namespace XunitTestSensor
             Assert.True(frequencies.Count() == 2);
 
         }
+        //[Theory]
+        //[InlineData("/")]
 
     }
 }
