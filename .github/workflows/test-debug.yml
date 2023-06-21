@@ -4,9 +4,9 @@ name: SensorData Tests in Debug
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "deve" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "deve" ]
 
 jobs:
 
