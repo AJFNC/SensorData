@@ -62,7 +62,10 @@ jobs:
     # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test --no-build --verbosity normal
+      env:
+        Configuration: ${{ matrix.configuration }}
 
+# Install the SSH key into the Linux running on Github for this workflow
     - name: Install SSH key
       uses: shimataro/ssh-key-action@v2
       with: 
