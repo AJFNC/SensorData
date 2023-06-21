@@ -82,6 +82,26 @@ namespace XunitTestSensor
             Assert.True(frequencies.Count == 3);
 
         }
+        [Fact]
+        public async Task DELETE_Frequency()
+        {
+            // Arrange
+            await using var application = new FrequencyApiApplication();
+            await FrequencyMockData.CreateFrequencies(application, true);
+            var url = "/api/Frequencies";
+
+            // Act
+            var client = application.CreateClient();
+
+            var result = await client.DeleteAsync(url + "/2");
+            var frequencies = await client.GetFromJsonAsync<List<Frequency>>(url);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.NoContent, result.StatusCode);
+            Assert.NotNull(frequencies);
+            Assert.True(frequencies.Count() == 1);
+
+        }
 
     }
 }
