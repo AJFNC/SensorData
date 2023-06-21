@@ -61,16 +61,25 @@ namespace XunitTestSensor
         {
             // Arrange
             await using var application = new FrequencyApiApplication();
-            await FrequencyMockData.CreateFrequencies(application, false);
+            await FrequencyMockData.CreateFrequencies(application, true);
             var url = "/api/Frequencies";
 
             // Act
+            var frequency = new Frequency {
+                Id = 999,
+                Sensor_Id = 1,
+                Frl1 = 0.123F,
+                Frl2 = 0.456F,
+                Frl3 = 0.789F,
+                ReadDateTime = DateTime.Now
+            };
             var client = application.CreateClient();
+            var result = await client.PostAsJsonAsync(url, frequency);
             var frequencies = await client.GetFromJsonAsync<List<Frequency>>(url);
 
             // Assert
-            Assert.NotNull(frequencies);
-            Assert.True(frequencies.Count() == 0);
+            Assert.Equal(HttpStatusCode.Created, result.StatusCode);
+            Assert.True(frequencies.Count == 3);
 
         }
 
