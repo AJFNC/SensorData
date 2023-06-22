@@ -102,6 +102,91 @@ namespace XunitTestSensor
             Assert.True(frequencies.Count() == 1);
 
         }
+        [Fact]
+        public async Task PUT_Existing_Frequency()
+        {
+            // Arrange
+            await using var application = new FrequencyApiApplication();
+            await FrequencyMockData.CreateFrequencies(application, true);
+            var url = "/api/Frequencies/1";
 
+            // Act
+            var client = application.CreateClient();
+            var frequency = new Frequency
+            {
+                Id = 1,
+                Sensor_Id = 1,
+                Frl1 = 1.111F,
+                Frl2 = 2.222F,
+                Frl3 = 3.333F,
+                ReadDateTime = DateTime.Now
+            };
+
+            var frequency1 = await client.GetFromJsonAsync<Frequency>(url);
+
+            var result = await client.PutAsJsonAsync<Frequency>(url, frequency);
+            var alteredFrequency = await client.GetFromJsonAsync<Frequency>(url);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.NoContent, result.StatusCode);  //o resultado retornado é 204 - No Content, mas altera o registro com os novos valores
+            Assert.NotEqual(frequency1.Frl1, alteredFrequency.Frl1);
+
+        }
+        [Fact]
+        public async Task PUT_Same_Frequency()
+        {
+            // Arrange
+            await using var application = new FrequencyApiApplication();
+            await FrequencyMockData.CreateFrequencies(application, true);
+            var url = "/api/Frequencies/1";
+
+            // Act
+            var client = application.CreateClient();
+            var frequency = new Frequency
+            {
+                Id = 1,
+                Sensor_Id = 1,
+                Frl1 = 0.111F,
+                Frl2 = 0.222F,
+                Frl3 = 0.333F,
+                ReadDateTime = DateTime.Now
+            };
+
+            var frequency1 = await client.GetFromJsonAsync<Frequency>(url);
+
+            var result = await client.PutAsJsonAsync<Frequency>(url, frequency);
+            var alteredFrequency = await client.GetFromJsonAsync<Frequency>(url);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.NoContent, result.StatusCode);      //o resultado retornado é 204 - No Content, mas altera o registro com os novos valores
+            Assert.Equal(frequency1.Frl1, alteredFrequency.Frl1);
+
+        }
+        [Fact]
+        public async Task PUT_NotExisting_Frequency()
+        {
+            // Arrange
+            await using var application = new FrequencyApiApplication();
+            await FrequencyMockData.CreateFrequencies(application, true);
+            var url = "/api/Frequencies/3";
+
+            // Act
+            var client = application.CreateClient();
+            var frequency = new Frequency
+            {
+                Id = 3,
+                Sensor_Id = 1,
+                Frl1 = 0.111F,
+                Frl2 = 0.222F,
+                Frl3 = 0.333F,
+                ReadDateTime = DateTime.Now
+            };
+
+            var result = await client.PutAsJsonAsync<Frequency>(url, frequency);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.NotFound, result.StatusCode);
+
+        }
     }
 }
